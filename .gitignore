@@ -1,0 +1,10 @@
+build
+.redo
+
+ci-dnf-stack
+createrepo_c
+dnf
+dnf-plugins-core
+dnf5
+libdnf
+librepo
