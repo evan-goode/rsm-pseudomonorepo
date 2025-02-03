@@ -24,7 +24,7 @@ case "$name" in
         ;;
 esac
 
-deps="$(comm -23 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$EXCLUDE_DEPS" | sort))"
+deps="$(comm -12 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$BUILD_FROM_SOURCE" | sort))"
 
 redo-ifchange mock "$BUILD_DIR/$name.src.rpm"
 for dep in $deps; do

@@ -21,7 +21,7 @@ case "$name" in
         exit 1
         ;;
 esac
-deps="$(comm -23 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$EXCLUDE_DEPS" | sort))"
+deps="$(comm -12 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$BUILD_FROM_SOURCE" | sort))"
 
 redo-ifchange "$BUILD_DIR/ci-dnf-stack.HEAD"
 for dep in $deps; do

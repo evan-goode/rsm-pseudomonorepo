@@ -8,5 +8,4 @@ MOCK_CHROOT=fedora-40-x86_64
 BASE_IMAGE=fedora:40
 CONTAINER_TAG=localhost/dnf-bot/dnf-testing
 
-EXCLUDE_DEPS=""
-# EXCLUDE_DEPS=""
+BUILD_FROM_SOURCE="libdnf dnf dnf5"

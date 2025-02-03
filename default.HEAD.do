@@ -11,7 +11,5 @@ if [[ $(git -C "$ROOT_DIR/$name" status -uno --porcelain) ]]; then
     exit 1
 fi
 
-(cd "$ROOT_DIR/$name" && git rev-parse HEAD) > "$3"
- 
 redo-always
-redo-stamp < "$3"
+(cd "$ROOT_DIR/$name" && git rev-parse HEAD) | redo-stamp
