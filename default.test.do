@@ -28,9 +28,9 @@ case "$name" in
         exit 1
         ;;
 esac
-redo-ifchange "$BUILD_DIR/ci-dnf-stack.HEAD" "$BUILD_DIR/$name.image"
+redo-ifchange ci-dnf-stack.HEAD "$BUILD_DIR/$name.image"
 
 sudo podman load < "$BUILD_DIR/$name.image" > /dev/stderr
 
-(cd "$ROOT_DIR/ci-dnf-stack" && sudo ./container-test ${CONTAINER_TAG:+--container="$CONTAINER_TAG"} -d $args) | tee "$3" > /dev/stderr
+(cd "$ROOT_DIR/ci-dnf-stack" && sudo ./container-test ${CI_CONTAINER_TAG:+--container="$CI_CONTAINER_TAG"} -d $args) | tee "$3" > /dev/stderr
 redo-stamp < "$3"

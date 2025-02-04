@@ -8,10 +8,10 @@ name="$(basename "$2")"
 
 case "$name" in
     "dnf-plugins-core")
-        deps="libdnf dnf"
+        deps="librepo libdnf dnf"
         ;;
     "dnf")
-        deps="libdnf"
+        deps="librepo libdnf"
         ;;
     "libdnf")
         deps="librepo"

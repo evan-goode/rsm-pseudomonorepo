@@ -8,3 +8,4 @@ dnf-plugins-core
 dnf5
 libdnf
 librepo
+bootc-test-scripts
