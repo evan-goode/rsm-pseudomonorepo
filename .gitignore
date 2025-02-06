@@ -9,3 +9,5 @@ dnf5
 libdnf
 librepo
 bootc-test-scripts
+centpkg
+fedpkg
