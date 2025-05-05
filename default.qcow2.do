@@ -6,7 +6,7 @@ redo-ifchange config.sh
 
 name="$(basename "$2")"
 
-deps="dnf libdnf librepo libsolv"
+deps="dnf5 dnf libdnf librepo libsolv"
 deps="$(comm -12 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$BUILD_FROM_SOURCE" | sort))"
 
 redo-ifchange "bootc-test-scripts.HEAD"
@@ -41,6 +41,7 @@ pushd "$ROOT_DIR/bootc-test-scripts" > /dev/null
         quay.io/centos-bootc/bootc-image-builder:latest \
         --type qcow2 \
         --local \
+        --rootfs xfs \
         "$BOOTC_CONTAINER_TAG" > /dev/stderr
     sudo chown -R "$(id -u):$(id -g)" output
     

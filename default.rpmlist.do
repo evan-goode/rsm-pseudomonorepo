@@ -14,10 +14,10 @@ case "$name" in
         deps="librepo libdnf"
         ;;
     "libdnf")
-        deps="librepo"
+        deps="librepo libsolv"
         ;;
     "dnf5")
-        deps="librepo"
+        deps="librepo libsolv"
         ;;
     *)
         deps=

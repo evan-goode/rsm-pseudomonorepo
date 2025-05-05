@@ -8,13 +8,10 @@ name="$(basename "$2")"
 
 case "$name" in
     "dnf4")
-        deps="libdnf dnf dnf-plugins-core"
+        deps="libdnf dnf dnf-plugins-core createrepo_c"
         ;;
     "dnf5")
-        deps="dnf5"
-        ;;
-    "createrepo_c")
-        deps="createrepo_c"
+        deps="dnf5 createrepo_c"
         ;;
     *)
         echo Unexpected name: "$name" > /dev/stderr
@@ -40,7 +37,7 @@ pushd "$ROOT_DIR/ci-dnf-stack" > /dev/null
         cp $dep_rpms rpms
     fi
 
-    sudo ./container-test --container="$CI_CONTAINER_TAG" build "${CI_BASE_IMAGE:+--base=$CI_BASE_IMAGE}" > /dev/stderr
+    sudo ./container-test --container="$CI_CONTAINER_TAG" build "${CI_BASE_IMAGE:+--base=$CI_BASE_IMAGE}" ${CI_CONTAINER_TYPE:+--type="$CI_CONTAINER_TYPE"} > /dev/stderr
 popd > /dev/null
 
 sudo podman image save "$CI_CONTAINER_TAG" > "$3"
