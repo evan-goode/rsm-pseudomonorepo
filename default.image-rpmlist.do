@@ -36,6 +36,7 @@ for dep in $deps; do
 done |
 xargs redo-ifchange
 
+touch "$3"
 for dep in $deps; do
     cat "$BUILD_DIR/$dep.rpmlist" >> "$3"
 done

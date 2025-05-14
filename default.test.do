@@ -33,5 +33,5 @@ redo-ifchange ci-dnf-stack.HEAD "$image"
 
 sudo podman load < "$image" > /dev/stderr
 
-(cd "$ROOT_DIR/ci-dnf-stack" && sudo ./container-test ${CI_CONTAINER_TAG:+--container="$CI_CONTAINER_TAG"} -d $args) | tee "$3" > /dev/stderr
+(cd "$ROOT_DIR/ci-dnf-stack" && sudo ./container-test ${CI_CONTAINER_TAG:+--container="$CI_CONTAINER_TAG"} -d $args) | tee "$3" | (iconv -f utf-8 -t utf-8 -c || true) > /dev/stderr
 redo-stamp < "$3"
