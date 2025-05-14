@@ -12,10 +12,13 @@ redo-ifchange ci-dnf-stack.HEAD
 
 out="$(realpath $3)"
 pushd "$ROOT_DIR/ci-dnf-stack" > /dev/null
+    # AWFUL HACK
+    mv rpms/.gitignore rpms/.gitignore.bak
     rm -rf rpms/* || true
     while IFS= read -r dep_rpm; do
         cp "$BUILD_DIR/$dep_rpm" rpms/
     done < "$BUILD_DIR/$name.image-rpmlist"
 
-    sudo tmt run | tee "$out" > /dev/stderr
+    sudo tmt -c distro=$TMT_DISTRO run --all provision --how virtual --image $TMT_PROVISION_IMAGE plan | tee "$out" > /dev/stderr
+    mv rpms/.gitignore.bak rpms/.gitignore
 popd > /dev/null

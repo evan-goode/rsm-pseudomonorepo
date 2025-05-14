@@ -6,7 +6,7 @@ redo-ifchange config.sh
 
 name="$(basename "$2")"
 
-if grep -wq <<< "$SOURCE_FROM_CENTPKG" "$name"; then
+if grep -wq <<< "$BUILD_FROM_CENTPKG" "$name"; then
     # Source from centpkg
     echo "Using $name from ./centpkg/$name/" > /dev/stderr
     redo-ifchange "centpkg.$name.HEAD"
@@ -15,7 +15,7 @@ if grep -wq <<< "$SOURCE_FROM_CENTPKG" "$name"; then
         cd "$ROOT_DIR/centpkg/$name"
         centpkg srpm | grep -m1 -E '^Wrote: .+\.src\.rpm$' | sed 's/^Wrote: //'
     )"
-elif grep -wq <<< "$SOURCE_FROM_FEDPKG" "$name"; then
+elif grep -wq <<< "$BUILD_FROM_FEDPKG" "$name"; then
     # Source from fedpkg
     echo "Using $name from ./fedpkg/$name/" > /dev/stderr
     redo-ifchange "fedpkg.$name.HEAD"

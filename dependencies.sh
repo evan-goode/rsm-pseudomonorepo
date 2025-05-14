@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ALL_PACKAGES="dnf libdnf librepo libsolv dnf5 createrepo_c dnf-plugins-core"
+ALL_PACKAGES="$(echo dnf libdnf librepo libsolv dnf5 createrepo_c dnf-plugins-core | tr ' ' '\n')"
 
 function shallow_dependencies {
     case "$1" in

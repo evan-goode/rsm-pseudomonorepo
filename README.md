@@ -16,7 +16,7 @@ Some things (building images, creating libvirt VMs, running tests with TMT) work
 2. For complete functionality, install the following:
 
     ```
-    sudo dnf install -y podman tmt+all mock @virtualization
+    sudo dnf install -y podman tmt+all mock @virtualization tito
     ```
 
 3.

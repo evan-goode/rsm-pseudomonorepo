@@ -15,15 +15,19 @@ redo-ifchange dependencies.sh
 name="$(basename "$2")"
 
 deps="$(intersection <(echo -n "$ALL_PACKAGES") <(echo -n "$BUILD_LOCALLY"))"
-redo-ifchange $deps
+for dep in $deps; do
+    echo "$BUILD_DIR/$dep.rpmlist"
+done |
+xargs redo-ifchange
 
 pushd "$ROOT_DIR/bootc-test-scripts" > /dev/null
+    redo-ifchange ./Containerfile
     rm -rf rpms || true
     mkdir -p rpms
     dep_rpms=""
     for dep in $deps; do
         while IFS= read -r dep_rpm; do
-            dep_rpms="$dep_rpms $BUILD_DIR/$dep.rpms/$dep_rpm"
+            dep_rpms="$dep_rpms $BUILD_DIR/$dep_rpm"
         done < "$BUILD_DIR/$dep.rpmlist"
     done
     if [ -n "$dep_rpms" ]; then

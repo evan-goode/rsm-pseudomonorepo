@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 redo-ifchange dependencies.sh
 . ./dependencies.sh
@@ -19,27 +19,24 @@ done |
 xargs redo-ifchange
 
 dep_rpms=""
+additional_packages_args=''
 for dep in $deps; do
     while IFS= read -r dep_rpm; do
         dep_rpms="$dep_rpms $BUILD_DIR/$dep_rpm"
+        additional_packages_args="$additional_packages_args --additional-package=$BUILD_DIR/$dep_rpm"
     done < "$BUILD_DIR/$dep.rpmlist"
 done
 
-if [ -n "$dep_rpms" ]; then
-    mock --root "$MOCK_CHROOT" --install $dep_rpms > /dev/stderr
-fi
+# mock --root "$MOCK_CHROOT" --no-clean --calculate-build-dependencies "$BUILD_DIR/$name.src.rpm" > /dev/stderr
 
 rpm_dir="$BUILD_DIR/$name.rpms"
 rm -rf "$rpm_dir"
 mkdir -p "$rpm_dir"
 
-mock --root "$MOCK_CHROOT" \
+mock --root "$MOCK_CHROOT" $additional_packages_args \
     --no-clean --no-cleanup-after \
-    --config-opts=dnf5_common_opts=--setopt=best=False \
-    --config-opts=dnf5_common_opts= \
-    --config-opts=dnf_common_opts=--setopt=best=False \
-    --config-opts=dnf_common_opts= \
     --resultdir "$BUILD_DIR/$name.rpms" \
+    --config-opts=update_before_build=False \
     "$BUILD_DIR/$name.src.rpm" > /dev/stderr
 
 find "$rpm_dir" -maxdepth 1 -regex '.*\.\(noarch\|x86_64\)\.rpm' -exec realpath --relative-to "$BUILD_DIR" {} \; > "$3"
