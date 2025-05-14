@@ -17,7 +17,7 @@
 MOCK_CHROOT=fedora-rawhide-x86_64
 
 # The CI base image should match the Mock chroot.
-# CI_BASE_IMAGE=fedora:rawhide
+CI_BASE_IMAGE=fedora:rawhide
 # CI_BASE_IMAGE=quay.io/centos/centos:stream10
 
 # "nightly" or "distro"
