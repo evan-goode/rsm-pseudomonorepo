@@ -1,5 +1,6 @@
 build/*
 .redo
+.redo.*
 
 ci-dnf-stack
 createrepo_c

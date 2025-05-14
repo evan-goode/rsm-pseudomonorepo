@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
+# TODO: rewrite this to not use evan-goode/bootc-test-scripts.
+# ci-dnf-stack@dnf-4-stack/bootc/Containerfile should be good to use here, we
+# would just need to inject an SSH public key. Or, we could skip the qcow2 step
+# entirely and use podman-bootc.
+
 redo-ifchange config.sh
 . ./config.sh
 
+redo-ifchange dependencies.sh
+. ./dependencies.sh
+
 name="$(basename "$2")"
 
-deps="dnf5 dnf libdnf librepo libsolv"
-deps="$(comm -12 <(tr ' ' '\n' <<< "$deps" | sort) <(tr ' ' '\n' <<< "$BUILD_FROM_SOURCE" | sort))"
-
-redo-ifchange "bootc-test-scripts.HEAD"
-for dep in $deps; do
-    redo-ifchange "$BUILD_DIR/$dep.rpmlist"
-done
+deps="$(intersection <(echo -n "$ALL_PACKAGES") <(echo -n "$BUILD_LOCALLY"))"
+redo-ifchange $deps
 
 pushd "$ROOT_DIR/bootc-test-scripts" > /dev/null
     rm -rf rpms || true
