@@ -11,10 +11,10 @@ name="$(basename "$2")"
 
 case "$name" in
     "dnf4")
-        shallow_deps="libdnf dnf dnf-plugins-core createrepo_c"
+        shallow_deps="libdnf dnf dnf-plugins-core createrepo_c rpm"
         ;;
     "dnf5")
-        shallow_deps="dnf5 createrepo_c"
+        shallow_deps="dnf5 createrepo_c podman rpm"
         ;;
     *)
         echo Unexpected name: "$name" > /dev/stderr

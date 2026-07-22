@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ALL_PACKAGES="$(echo dnf libdnf librepo libsolv dnf5 createrepo_c dnf-plugins-core | tr ' ' '\n')"
+ALL_PACKAGES="$(echo dnf libdnf librepo libsolv dnf5 microdnf createrepo_c dnf-plugins-core | tr ' ' '\n')"
 
 function shallow_dependencies {
     case "$1" in
@@ -9,13 +9,16 @@ function shallow_dependencies {
             shallow_deps='dnf'
             ;;
         "dnf")
-            shallow_deps='librepo libdnf'
+            shallow_deps='librepo libdnf rpm'
             ;;
         "libdnf")
             shallow_deps='librepo libsolv'
             ;;
         "dnf5")
-            shallow_deps='librepo libsolv'
+            shallow_deps='librepo libsolv rpm'
+            ;;
+        "microdnf")
+            shallow_deps='librepo libdnf'
             ;;
         *)
             shallow_deps=''

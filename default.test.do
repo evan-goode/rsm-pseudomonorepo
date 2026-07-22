@@ -9,19 +9,19 @@ image=
 
 case "$name" in
     "dnf4")
-        image="$BUILD_DIR/dnf4.image"
+        image="$BUILD_DIR/dnf4.test-image"
         args="run"
         ;;
     "dnf5")
-        image="$BUILD_DIR/dnf5.image"
+        image="$BUILD_DIR/dnf5.test-image"
         args="run --tags dnf5 --command dnf5"
         ;;
     "dnf5daemon.dnf5")
-        image="$BUILD_DIR/dnf5.image"
+        image="$BUILD_DIR/dnf5.test-image"
         args="run --tags dnf5daemon --command dnf5daemon-client"
         ;;
     "createrepo_c.dnf5")
-        image="$BUILD_DIR/dnf5.image"
+        image="$BUILD_DIR/dnf5.test-image"
         args="--suite createrepo_c run"
         ;;
     *)

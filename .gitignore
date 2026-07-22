@@ -13,3 +13,6 @@ bootc-test-scripts
 centpkg
 fedpkg
 libsolv
+podman
+microdnf
+rpm
