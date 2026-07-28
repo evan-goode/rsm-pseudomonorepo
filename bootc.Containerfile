@@ -29,7 +29,8 @@ RUN set -x && \
         dnf5 -y distro-sync --from-repo=local --setopt=allow_vendor_change=true; \
     fi
 
-RUN dnf5 install -y neovim zsh buildah dnf5-plugin-manifest dnf-bootc rpm-plugin-reflink rpm-build --setopt=allow_vendor_change=true
+RUN dnf5 install -y neovim zsh buildah dnf5-plugin-manifest dnf5-plugin-rebuild --setopt=allow_vendor_change=true
+# RUN dnf5 install -y neovim zsh buildah dnf5-plugin-manifest dnf-bootc dnf-plugin-cow rpm-plugin-reflink rpm-build --setopt=allow_vendor_change=true
 
 # add user evan with uid 1000, member of wheel
 RUN useradd -u 1000 -G wheel -s /bin/zsh evan

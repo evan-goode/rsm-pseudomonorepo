@@ -14,7 +14,7 @@ case "$name" in
         shallow_deps="libdnf dnf dnf-plugins-core createrepo_c rpm"
         ;;
     "dnf5")
-        shallow_deps="dnf5 createrepo_c podman rpm"
+        shallow_deps="dnf5 createrepo_c podman rpm dnf-plugin-cow librepo"
         ;;
     *)
         echo Unexpected name: "$name" > /dev/stderr
@@ -32,12 +32,12 @@ deps="$(sort <<< "$deps" | uniq | sed '/^$/d')"
 deps="$(intersection <(echo -n "$deps") <(echo -n "$BUILD_LOCALLY"))"
 
 for dep in $deps; do
-    echo "$BUILD_DIR/$dep.rpmlist"
+    echo "$BUILD_DIR/$dep.rpms.hash"
 done |
 xargs redo-ifchange
 
 touch "$3"
 for dep in $deps; do
-    cat "$BUILD_DIR/$dep.rpmlist" >> "$3"
+    find "$BUILD_DIR/$dep.rpms" -maxdepth 1 -regex '.*\.\(noarch\|x86_64\)\.rpm' -exec realpath --relative-to "$BUILD_DIR" {} \; >> "$3"
 done
 redo-stamp < "$3"

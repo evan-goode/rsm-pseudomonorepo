@@ -3,6 +3,8 @@ build/*
 .redo.*
 
 ci-dnf-stack
+libpkgmanifest
+dnf-plugin-cow
 createrepo_c
 dnf
 dnf-plugins-core

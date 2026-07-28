@@ -14,20 +14,16 @@ deps="$(intersection <(echo -n "$deps") <(echo -n "$BUILD_LOCALLY"))"
 
 redo-ifchange mock "$BUILD_DIR/$name.src.rpm"
 for dep in $deps; do
-    echo "$BUILD_DIR/$dep.rpmlist"
+    echo "$BUILD_DIR/$dep.rpms.hash"
 done |
 xargs redo-ifchange
 
-dep_rpms=""
 additional_packages_args=''
 for dep in $deps; do
-    while IFS= read -r dep_rpm; do
-        dep_rpms="$dep_rpms $BUILD_DIR/$dep_rpm"
-        additional_packages_args="$additional_packages_args --additional-package=$BUILD_DIR/$dep_rpm"
-    done < "$BUILD_DIR/$dep.rpmlist"
+    while IFS= read -r rpm; do
+        additional_packages_args="$additional_packages_args --additional-package=$rpm"
+    done < <(find "$BUILD_DIR/$dep.rpms" -maxdepth 1 -regex '.*\.\(noarch\|x86_64\)\.rpm')
 done
-
-# mock --root "$MOCK_CHROOT" --no-clean --calculate-build-dependencies "$BUILD_DIR/$name.src.rpm" > /dev/stderr
 
 rpm_dir="$BUILD_DIR/$name.rpms"
 rm -rf "$rpm_dir"
@@ -40,9 +36,11 @@ fi
 
 mock --root "$MOCK_CHROOT" $additional_packages_args \
     --no-clean --no-cleanup-after \
-    --resultdir "$BUILD_DIR/$name.rpms" \
+    --resultdir "$rpm_dir" \
     --config-opts=update_before_build=False \
     ${MOCK_WITH_OPTIONS[$name]:-} $repo_args "$BUILD_DIR/$name.src.rpm" > /dev/stderr
 
-find "$rpm_dir" -maxdepth 1 -regex '.*\.\(noarch\|x86_64\)\.rpm' -exec realpath --relative-to "$BUILD_DIR" {} \; > "$3"
+rm -rf "$rpm_dir"/*.src.rpm
+
+nix-hash --type sha256 "$rpm_dir" > "$3"
 redo-stamp < "$3"

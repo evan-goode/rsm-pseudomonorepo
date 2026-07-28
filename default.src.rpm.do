@@ -40,6 +40,10 @@ else
         srpm_tmp_path="$(
             set -euo pipefail
             cd "$ROOT_DIR/$name"
+            # Compute git commit info to label the release (like tito --test)
+            git_commit_count="$(git rev-list HEAD --count)"
+            git_short_hash="$(git rev-parse --short HEAD)"
+            git_release_suffix=".git.${git_commit_count}.${git_short_hash}"
             sudo podman build --target base --tag rpm-build -f tests/Dockerfile . > /dev/stderr
             sudo rm -rf "$BUILD_DIR/rpm._build"
             mkdir -p "$BUILD_DIR/rpm._build"
@@ -52,6 +56,8 @@ else
             tmpdir=$(mktemp -d)
             cp "$tarball" "$tmpdir/"
             cp "$ROOT_DIR/$name/rpm.spec" "$tmpdir/"
+            # Append git info to the Release field (like tito --test)
+            sed -i "s/^\\(Release:.*\\)%{?dist}/\\1${git_release_suffix}%{?dist}/" "$tmpdir/rpm.spec"
             # Copy patches and extra sources referenced by the spec
             cp "$ROOT_DIR/$name/"*.patch "$tmpdir/" 2>/dev/null || true
             cp "$ROOT_DIR/$name/rpmdb-rebuild.service" "$tmpdir/" 2>/dev/null || true

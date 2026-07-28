@@ -4,7 +4,7 @@
 # at ./$PACKAGE_NAME. For example, BUILD_FROM_SOURCE="dnf5" will build dnf5
 # from ./dnf5, which could be a symbolic link to a repository stored elsewhere.
 # BUILD_FROM_SOURCE="dnf5 podman"
-BUILD_FROM_SOURCE="rpm librepo"
+BUILD_FROM_SOURCE="dnf5 libpkgmanifest"
 
 # Mock --with/--without options per package. Keys are package names, values are
 # space-separated lists of --with=X and/or --without=X flags passed to mock.
@@ -15,7 +15,7 @@ declare -A MOCK_WITH_OPTIONS
 
 # Packages listed under BUILD_FROM_CENTPKG will be built from the dist-git
 # repository at ./centpkg/$PACKAGE_NAME.
-# BUILD_FROM_CENTPKG="libsolv"
+BUILD_FROM_CENTPKG=""
 
 # Packages listed under BUILD_FROM_FEDPKG will be built from the dist-git
 # repository at ./fedpkg/$PACKAGE_NAME.
@@ -37,10 +37,10 @@ MOCK_CHROOT=fedora-44-x86_64
 # The CI base image should match the Mock chroot.
 # CI_BASE_IMAGE=fedora:42
 # CI_BASE_IMAGE=fedora:43
-# CI_BASE_IMAGE=fedora:44
+CI_BASE_IMAGE=fedora:44
 # CI_BASE_IMAGE=fedora:rawhide
 # CI_BASE_IMAGE=quay.io/centos/centos:stream9
-CI_BASE_IMAGE=quay.io/centos/centos:stream10
+# CI_BASE_IMAGE=quay.io/centos/centos:stream10
 
 # BOOTC_BASE_IMAGE=quay.io/centos-bootc/centos-bootc:stream9
 # BOOTC_BASE_IMAGE=quay.io/centos-bootc/centos-bootc:stream10

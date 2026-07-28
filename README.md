@@ -16,7 +16,7 @@ Some things (building images, creating libvirt VMs, running tests with TMT) work
 2. For complete functionality, install the following:
 
     ```
-    sudo dnf install -y podman tmt+all mock @virtualization tito
+    sudo dnf install -y podman tmt+all mock @virtualization tito nix-hash
     ```
 
 3.
@@ -58,10 +58,10 @@ All output files will be under `build/`. Outputting multiple RPMs is a bit weird
 ### Build RPMs
 
 ```
-redo build/dnf.rpmlist
+redo build/dnf.rpms.hash
 
-# A list of `build/`-relative paths to resulting RPMs will be in `build/dnf.rpmlist`. For example:
-cd build; xargs sudo dnf install -y < dnf.rpmlist
+# Resulting RPMs will be in `build/dnf.rpms`. For example:
+sudo dnf install build/dnf.rpms/*.{noarch,x86_64}.rpm
 ```
 
 ### Run ci-dnf-stack tests
@@ -72,16 +72,16 @@ redo build/dnf4.test # for dnf-4-stack branch
 redo build/dnf5.test # for main branch
 ```
 
-### Start a bootc VM (WIP)
+### Build a bootc image (WIP)
 
-Clone https://github.com/evan-goode/bootc-test-scripts to `bootc-test-scripts`, then
+Edit `bootc.Containerfile` to your liking, then
 
 ```
-redo build/bootc.virt-install
+redo build/dnf5.bootc.image
 ```
 
 ### Run bootc ci-dnf-stack tests via TMT
 
 ```
-redo build/dnf4.test
+redo build/dnf5.tmt
 ```

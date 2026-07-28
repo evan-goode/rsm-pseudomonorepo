@@ -15,10 +15,12 @@ containerfile="$(realpath ./bootc.Containerfile)"
 redo-ifchange "$containerfile"
 
 pushd "$ROOT_DIR/ci-dnf-stack" > /dev/null
-    rm -rf rpms
-    cp -rl "$BUILD_DIR/$name.repo" rpms
+    mv rpms/.gitignore rpms/.gitignore.bak
+    rm -rf rpms/* || true
+    cp -rl "$BUILD_DIR"/"$name".repo/* rpms
 
     sudo ./container-test --container="$BOOTC_CONTAINER_TAG" build --usecache --file "$containerfile" "${BOOTC_BASE_IMAGE:+--base=$BOOTC_BASE_IMAGE}" ${CI_CONTAINER_TYPE:+--type="$CI_CONTAINER_TYPE"} --container-arg=--build-arg --container-arg=CACHEBUST="$(uuidgen)" > /dev/stderr
+    mv rpms/.gitignore.bak rpms/.gitignore
 popd > /dev/null
 
 sudo podman image save "$BOOTC_CONTAINER_TAG" > "$3"
