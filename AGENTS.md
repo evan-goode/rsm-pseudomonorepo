@@ -21,7 +21,7 @@ General process:
     4. If running tests, select the `CI_BASE_IMAGE` that matches the `MOCK_CHROOT`
     5. If you want to test the latest development version of dependencies, use `CI_CONTAINER_TYPE=nightly`. If you want to test for a downstream release (common when building from `rhel-X.Y` branches, and you want to test with downstream-available dependencies, set `CI_CONTAINER_TYPE=distro`. With `nightly`, packages from the dnf-nightly Copr repository are used to build the test container.
 
-To build a project (first building its recursive dependencies, if they are listed in `$BUILD_FROM_{SOURCE,FEDPKG,CENTPKG}`), run `redo build/$repository.rpmlist`. 
+To build a project (first building its recursive dependencies, if they are listed in `$BUILD_FROM_{SOURCE,FEDPKG,CENTPKG}`), run `redo build/$project.rpms.hash`.  RPMs will then be available in `build/$project.rpms`.
 
 To run ci-dnf-stack integration tests, run `redo build/dnf5.test` or `redo build/dnf4.test`.
 
